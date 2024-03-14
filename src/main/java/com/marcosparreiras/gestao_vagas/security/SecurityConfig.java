@@ -19,6 +19,8 @@ public class SecurityConfig {
           .requestMatchers("/candidate/")
           .permitAll()
           .requestMatchers("/company/")
+          .permitAll()
+          .requestMatchers("/auth/company")
           .permitAll();
         auht.anyRequest().authenticated();
       });
