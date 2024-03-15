@@ -7,14 +7,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Data
 @Entity(name = "job")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class JobEntity {
 
   @Id
@@ -23,15 +28,13 @@ public class JobEntity {
 
   private String description;
   private String benefits;
-
-  @NotBlank(message = "level is a required field")
   private String level;
 
   @ManyToOne
   @JoinColumn(name = "company_id", insertable = false, updatable = false)
   private CompanyEntity companyEntity;
 
-  @Column(name = "company_id", nullable = false)
+  @Column(name = "company_id")
   private UUID companyId;
 
   @CreationTimestamp
