@@ -1,8 +1,10 @@
 package com.marcosparreiras.gestao_vagas.modules.candidate.useCases;
 
-import com.marcosparreiras.gestao_vagas.modules.candidate.dto.AuthCandidateDTO;
+import com.marcosparreiras.gestao_vagas.modules.candidate.dto.AuthCandidateRequestDTO;
+import com.marcosparreiras.gestao_vagas.modules.candidate.dto.AuthCandidateResponseDTO;
 import com.marcosparreiras.gestao_vagas.modules.candidate.repositories.CandidateRepository;
 import com.marcosparreiras.gestao_vagas.providers.JWTProvider;
+import java.util.Arrays;
 import javax.naming.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,8 +22,9 @@ public class AuthCandidateUseCase {
   @Autowired
   private JWTProvider jwtProvider;
 
-  public String execute(AuthCandidateDTO authCandidateDTO)
-    throws AuthenticationException {
+  public AuthCandidateResponseDTO execute(
+    AuthCandidateRequestDTO authCandidateDTO
+  ) throws AuthenticationException {
     var candidate =
       this.candidateRepository.findByUserName(authCandidateDTO.getUserName());
     if (candidate == null) {
@@ -37,8 +40,12 @@ public class AuthCandidateUseCase {
       throw new AuthenticationException("Invalid credentials");
     }
 
-    var token = jwtProvider.generateToken(candidate.getId().toString());
+    var token =
+      this.jwtProvider.generateToken(
+          candidate.getId().toString(),
+          Arrays.asList("candidate")
+        );
 
-    return token;
+    return new AuthCandidateResponseDTO(token);
   }
 }

@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +25,11 @@ public class JWTProvider {
     return subject;
   }
 
-  public String generateToken(String id) {
+  public String generateToken(String id, List<String> roles) {
     var token = JWT
       .create()
       .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
+      .withClaim("roles", roles)
       .withSubject(id)
       .sign(this.getAlgorithm());
     return token;

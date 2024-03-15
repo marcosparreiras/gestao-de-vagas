@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class AuthCandidateDTO {
+public class AuthCandidateRequestDTO {
 
   @NotBlank(message = "userName is a required field")
   private String userName;

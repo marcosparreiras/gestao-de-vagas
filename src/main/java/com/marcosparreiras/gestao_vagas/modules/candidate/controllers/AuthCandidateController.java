@@ -1,6 +1,6 @@
 package com.marcosparreiras.gestao_vagas.modules.candidate.controllers;
 
-import com.marcosparreiras.gestao_vagas.modules.candidate.dto.AuthCandidateDTO;
+import com.marcosparreiras.gestao_vagas.modules.candidate.dto.AuthCandidateRequestDTO;
 import com.marcosparreiras.gestao_vagas.modules.candidate.useCases.AuthCandidateUseCase;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +13,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthCandidate {
+public class AuthCandidateController {
 
   @Autowired
   private AuthCandidateUseCase authCandidateUseCase;
 
   @PostMapping("/candidate")
-  public ResponseEntity<Object> create(
-    @Valid @RequestBody AuthCandidateDTO authCandidateDTO
+  public ResponseEntity<Object> auth(
+    @Valid @RequestBody AuthCandidateRequestDTO authCandidateRequestDTO
   ) {
     try {
-      var token = this.authCandidateUseCase.execute(authCandidateDTO);
-      return ResponseEntity.status(HttpStatus.CREATED).body(token);
+      var response = this.authCandidateUseCase.execute(authCandidateRequestDTO);
+      return ResponseEntity.status(HttpStatus.CREATED).body(response);
     } catch (Exception error) {
-      return ResponseEntity.badRequest().body(error.getMessage());
+      return ResponseEntity
+        .status(HttpStatus.UNAUTHORIZED)
+        .body(error.getMessage());
     }
   }
 }

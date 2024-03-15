@@ -3,6 +3,7 @@ package com.marcosparreiras.gestao_vagas.modules.company.useCases;
 import com.marcosparreiras.gestao_vagas.modules.company.dto.AuthCompanyDTO;
 import com.marcosparreiras.gestao_vagas.modules.company.repositories.CompanyRepository;
 import com.marcosparreiras.gestao_vagas.providers.JWTProvider;
+import java.util.Arrays;
 import javax.naming.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +38,11 @@ public class AuthCompanyUseCase {
       throw new AuthenticationException("Invalid credentials");
     }
 
-    var token = this.JWTProvider.generateToken(comapny.getId().toString());
+    var token =
+      this.JWTProvider.generateToken(
+          comapny.getId().toString(),
+          Arrays.asList("company")
+        );
 
     return token;
   }
