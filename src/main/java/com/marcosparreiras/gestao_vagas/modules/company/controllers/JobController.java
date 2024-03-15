@@ -1,11 +1,9 @@
 package com.marcosparreiras.gestao_vagas.modules.company.controllers;
 
 import com.marcosparreiras.gestao_vagas.modules.company.dto.CreateJobDTO;
-import com.marcosparreiras.gestao_vagas.modules.company.entities.JobEntity;
 import com.marcosparreiras.gestao_vagas.modules.company.useCases.CreateJobUseCase;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

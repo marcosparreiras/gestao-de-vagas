@@ -11,4 +11,5 @@ public interface CandidateRepository
     String userName,
     String email
   );
+  CandidateEntity findByUserName(String userName);
 }

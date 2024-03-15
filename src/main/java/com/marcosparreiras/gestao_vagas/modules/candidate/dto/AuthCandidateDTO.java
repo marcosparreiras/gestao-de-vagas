@@ -1,12 +1,10 @@
-package com.marcosparreiras.gestao_vagas.modules.company.dto;
+package com.marcosparreiras.gestao_vagas.modules.candidate.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
-public class AuthCompanyDTO {
+public class AuthCandidateDTO {
 
   @NotBlank(message = "userName is a required field")
   private String userName;
