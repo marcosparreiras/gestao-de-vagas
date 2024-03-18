@@ -41,7 +41,7 @@ public class AuthCompanyUseCase {
     var token =
       this.JWTProvider.generateToken(
           comapny.getId().toString(),
-          Arrays.asList("company")
+          Arrays.asList("COMPANY")
         );
 
     return token;

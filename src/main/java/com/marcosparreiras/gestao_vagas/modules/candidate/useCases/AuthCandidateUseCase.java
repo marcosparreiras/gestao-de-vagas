@@ -43,7 +43,7 @@ public class AuthCandidateUseCase {
     var token =
       this.jwtProvider.generateToken(
           candidate.getId().toString(),
-          Arrays.asList("candidate")
+          Arrays.asList("CANDIDATE")
         );
 
     return new AuthCandidateResponseDTO(token);
