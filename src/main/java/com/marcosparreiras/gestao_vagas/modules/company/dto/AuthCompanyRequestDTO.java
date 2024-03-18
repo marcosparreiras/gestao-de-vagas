@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AuthCompanyDTO {
+public class AuthCompanyRequestDTO {
 
   @NotBlank(message = "userName is a required field")
   private String userName;

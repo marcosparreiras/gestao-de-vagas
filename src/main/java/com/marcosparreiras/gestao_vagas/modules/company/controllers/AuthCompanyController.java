@@ -1,6 +1,6 @@
 package com.marcosparreiras.gestao_vagas.modules.company.controllers;
 
-import com.marcosparreiras.gestao_vagas.modules.company.dto.AuthCompanyDTO;
+import com.marcosparreiras.gestao_vagas.modules.company.dto.AuthCompanyRequestDTO;
 import com.marcosparreiras.gestao_vagas.modules.company.useCases.AuthCompanyUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +19,11 @@ public class AuthCompanyController {
 
   @PostMapping("/auth")
   public ResponseEntity<Object> create(
-    @RequestBody AuthCompanyDTO authCompanyDTO
+    @RequestBody AuthCompanyRequestDTO authCompanyRequestDTO
   ) {
     try {
-      var token = authCompanyUseCase.execute(authCompanyDTO);
-      return ResponseEntity.status(HttpStatus.CREATED).body(token);
+      var result = authCompanyUseCase.execute(authCompanyRequestDTO);
+      return ResponseEntity.status(HttpStatus.CREATED).body(result);
     } catch (Exception error) {
       return ResponseEntity
         .status(HttpStatus.UNAUTHORIZED)

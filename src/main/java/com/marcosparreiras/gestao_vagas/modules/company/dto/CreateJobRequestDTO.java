@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class CreateJobDTO {
+public class CreateJobRequestDTO {
 
   @NotBlank(message = "Description is a required field")
   private String description;

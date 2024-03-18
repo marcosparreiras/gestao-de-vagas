@@ -1,6 +1,7 @@
 package com.marcosparreiras.gestao_vagas.modules.company.useCases;
 
-import com.marcosparreiras.gestao_vagas.modules.company.dto.AuthCompanyDTO;
+import com.marcosparreiras.gestao_vagas.modules.company.dto.AuthCompanyRequestDTO;
+import com.marcosparreiras.gestao_vagas.modules.company.dto.AuthCompanyResponseDTO;
 import com.marcosparreiras.gestao_vagas.modules.company.repositories.CompanyRepository;
 import com.marcosparreiras.gestao_vagas.providers.JWTProvider;
 import java.util.Arrays;
@@ -21,17 +22,20 @@ public class AuthCompanyUseCase {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
-  public String execute(AuthCompanyDTO authCompanyDTO)
-    throws AuthenticationException {
+  public AuthCompanyResponseDTO execute(
+    AuthCompanyRequestDTO authCOmpanyRequestDTO
+  ) throws AuthenticationException {
     var comapny =
-      this.companyRepository.findByUserName(authCompanyDTO.getUserName());
+      this.companyRepository.findByUserName(
+          authCOmpanyRequestDTO.getUserName()
+        );
     if (comapny == null) {
       throw new AuthenticationException("Invalid credentials");
     }
 
     var passwordIsValid =
       this.passwordEncoder.matches(
-          authCompanyDTO.getPassword(),
+          authCOmpanyRequestDTO.getPassword(),
           comapny.getPassword()
         );
     if (!passwordIsValid) {
@@ -44,6 +48,6 @@ public class AuthCompanyUseCase {
           Arrays.asList("COMPANY")
         );
 
-    return token;
+    return new AuthCompanyResponseDTO(token);
   }
 }
