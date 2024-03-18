@@ -17,21 +17,19 @@ public class JWTProvider {
 
   public String validateToken(String token) throws JWTVerificationException {
     token = token.replace("Bearer ", "");
-    var subject = JWT
-      .require(this.getAlgorithm())
-      .build()
-      .verify(token)
-      .getSubject();
+    var algorithm = this.getAlgorithm();
+    var subject = JWT.require(algorithm).build().verify(token).getSubject();
     return subject;
   }
 
   public String generateToken(String id, List<String> roles) {
+    var algorithm = this.getAlgorithm();
     var token = JWT
       .create()
       .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
       .withClaim("roles", roles)
       .withSubject(id)
-      .sign(this.getAlgorithm());
+      .sign(algorithm);
     return token;
   }
 

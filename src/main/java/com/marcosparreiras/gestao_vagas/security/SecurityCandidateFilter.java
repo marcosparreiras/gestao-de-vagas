@@ -1,24 +1,23 @@
 package com.marcosparreiras.gestao_vagas.security;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.marcosparreiras.gestao_vagas.providers.JWTProvider;
+import com.marcosparreiras.gestao_vagas.providers.JWTCandidateProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
-public class SecurityFilter extends OncePerRequestFilter {
+public class SecurityCandidateFilter extends OncePerRequestFilter {
 
   @Autowired
-  private JWTProvider jwtProvider;
+  JWTCandidateProvider jwtCandidateProvider;
 
   @Override
   @SuppressWarnings("null")
@@ -27,27 +26,31 @@ public class SecurityFilter extends OncePerRequestFilter {
     HttpServletResponse response,
     FilterChain filterChain
   ) throws ServletException, IOException {
-    if (request.getRequestURI().startsWith("/company")) {
+    if (request.getRequestURI().startsWith("/candidate")) {
       SecurityContextHolder.getContext().setAuthentication(null);
       String header = request.getHeader("Authorization");
-
       if (header != null) {
-        try {
-          var subjectToken = this.jwtProvider.validateToken(header);
-          request.setAttribute("company_id", subjectToken);
-          UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-            subjectToken,
-            null,
-            Collections.emptyList()
-          );
-          SecurityContextHolder.getContext().setAuthentication(auth);
-        } catch (JWTVerificationException error) {
+        var token = this.jwtCandidateProvider.validateToken(header);
+        if (token == null) {
           response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
           return;
         }
+        request.setAttribute("candidate_id", token.getSubject());
+        var roles = token.getClaim("roles").asList(Object.class);
+
+        var grants = roles
+          .stream()
+          .map(role -> new SimpleGrantedAuthority(role.toString()))
+          .toList();
+
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+          token.getSubject(),
+          null,
+          grants
+        );
+        SecurityContextHolder.getContext().setAuthentication(auth);
       }
     }
-
     filterChain.doFilter(request, response);
   }
 }
