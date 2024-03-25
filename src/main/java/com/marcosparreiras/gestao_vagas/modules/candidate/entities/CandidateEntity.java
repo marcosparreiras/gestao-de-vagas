@@ -1,5 +1,6 @@
 package com.marcosparreiras.gestao_vagas.modules.candidate.entities;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,17 +21,23 @@ public class CandidateEntity {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
+  @Schema(example = "John Doe")
   private String name;
+
+  @Schema(example = "Desenvolvedor Java júnior")
   private String description;
+
   private String curriculum;
 
   @Pattern(
     regexp = "^\\S+$",
     message = "userName field should not have white spaces"
   )
+  @Schema(example = "john-doe")
   private String userName;
 
   @Email(message = "Email field should contain a valid email")
+  @Schema(example = "johndoe@example.com")
   private String email;
 
   @Length(
@@ -38,6 +45,7 @@ public class CandidateEntity {
     max = 100,
     message = "Password field should have at least 6 characters"
   )
+  @Schema(example = "user@1234")
   private String password;
 
   @CreationTimestamp

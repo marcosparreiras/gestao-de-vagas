@@ -1,5 +1,6 @@
 package com.marcosparreiras.gestao_vagas.modules.company.entities;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,8 +27,13 @@ public class JobEntity {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
+  @Schema(example = "Vaga para desenvolvedor júnior")
   private String description;
+
+  @Schema(example = "Gympass e plano de saúde")
   private String benefits;
+
+  @Schema(example = "Júnior")
   private String level;
 
   @ManyToOne
