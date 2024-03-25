@@ -3,15 +3,21 @@
 ### Principais tecnologias
 
 - Java
+
 - Spring Boot
+
 - Java Persistence API (JPA)
+
 - PostgreSQL
+
 - JWT
 
 ### Entidades
 
 - Candidate
+
 - Company
+
 - Job
 
 # Endpoints
@@ -23,6 +29,7 @@
 | POST   | /candidate/        | ❌                     | Cria um novo candidato na aplicação                                            |
 | POST   | /candidate/auth    | ❌                     | Inicia a sessão de um candidato na aplicação e retorna um token de autorização |
 | GET    | /candidate/profile | ✅                     | Retorna os dados do candidato que faz a requisição                             |
+| GET    | /candidate/jobs    | ✅                     | Retorna as vagas disponíveis para o candidato                                  |
 
 ---
 
@@ -33,9 +40,13 @@
 ```json
 {
   "name": "John Doe",
+
   "description": "Enthusiastic candidate seeking junior programming opportunities, with promising skills in software development.",
+
   "userName": "john-doe",
+
   "email": "johndoe@example.com",
+
   "password": "123456"
 }
 ```
@@ -49,6 +60,7 @@
 ```json
 {
   "userName": "john-doe",
+
   "password": "123456"
 }
 ```
@@ -60,18 +72,42 @@
 ##### Headers
 
 ```bash
-Authorization: "Bearer token"
+
+Authorization:  "Bearer token"
+
+```
+
+---
+
+#### GET /candidate/jobs
+
+##### Headers
+
+```bash
+
+Authorization:  "Bearer token"
+
+```
+
+##### Seacrh params
+
+```bash
+?filter=junior
 ```
 
 ---
 
 ### Company
 
-| Método | Rota          | Necessário autorização | Descrição                                                                     |
+| Método | Rota | Necessário autorização | Descrição |
+
 | ------ | ------------- | ---------------------- | ----------------------------------------------------------------------------- |
-| POST   | /company/     | ❌                     | Cria uma nova empresa na aplicação                                            |
-| POST   | /company/auth | ❌                     | Inicia a sessão de uma empresa na aplicação e retorna um token de autorização |
-| POST   | /company/job/ | ✅                     | Cria uma nova vaga relacionada a empresa que faz a requisição.                |
+
+| POST | /company/ | ❌ | Cria uma nova empresa na aplicação |
+
+| POST | /company/auth | ❌ | Inicia a sessão de uma empresa na aplicação e retorna um token de autorização |
+
+| POST | /company/job/ | ✅ | Cria uma nova vaga relacionada a empresa que faz a requisição. |
 
 ---
 
@@ -82,10 +118,15 @@ Authorization: "Bearer token"
 ```json
 {
   "name": "My Company",
+
   "webSite": "www.mycompany.com",
+
   "description": "My Company is a leading software development firm known for its innovative solutions and client-centric approach",
+
   "userName": "my-company",
+
   "email": "mycompany@example.com",
+
   "password": "123456"
 }
 ```
@@ -98,7 +139,8 @@ Authorization: "Bearer token"
 
 ```json
 {
-  "userName": "my-compan",
+  "userName": "my-company",
+
   "password": "123456"
 }
 ```
@@ -110,7 +152,9 @@ Authorization: "Bearer token"
 ##### Headers
 
 ```bash
-Authorization: "Bearer token"
+
+Authorization:  "Bearer token"
+
 ```
 
 ##### Body
@@ -118,7 +162,9 @@ Authorization: "Bearer token"
 ```json
 {
   "description": "We are hiring a Junior Software Engineer to join our dynamic team. Responsibilities include coding, testing, and collaborating on innovative software solutions. Apply now!",
+
   "benefits": "Competitive salary package, Opportunities for career growth and advancement, Health insurance coverage, Flexible work schedule, Generous vacation and paid time off",
+
   "level": "junior"
 }
 ```
