@@ -1,6 +1,7 @@
 package com.marcosparreiras.gestao_vagas.modules.candidate.controllers;
 
 import com.marcosparreiras.gestao_vagas.modules.candidate.dto.ProfileCandidateResponseDTO;
+import com.marcosparreiras.gestao_vagas.modules.candidate.entities.ApplyJobEntity;
 import com.marcosparreiras.gestao_vagas.modules.candidate.entities.CandidateEntity;
 import com.marcosparreiras.gestao_vagas.modules.candidate.useCases.ApplyJobCandidateUseCase;
 import com.marcosparreiras.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
@@ -135,6 +136,23 @@ public class CandidateController {
 
   @PostMapping("/jobs/{jobId}/apply")
   @PreAuthorize("hasRole('CANDIDATE')")
+  @Operation(
+    summary = "Aplica o candidato para uma vaga",
+    description = "Essa fução é responsável por aplicar o candidato para uma vaga especificada"
+  )
+  @ApiResponses(
+    {
+      @ApiResponse(
+        responseCode = "200",
+        content = {
+          @Content(schema = @Schema(implementation = ApplyJobEntity.class)),
+        }
+      ),
+      @ApiResponse(responseCode = "400", description = "User not found"),
+      @ApiResponse(responseCode = "400", description = "Job not found"),
+    }
+  )
+  @SecurityRequirement(name = "jwt_auth")
   public ResponseEntity<Object> jobsApply(
     @PathVariable String jobId,
     HttpServletRequest request
