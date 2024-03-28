@@ -50,9 +50,13 @@ public class JobController {
     @Valid @RequestBody CreateJobRequestDTO createJobRequestDTO,
     HttpServletRequest request
   ) {
-    var companyId = request.getAttribute("company_id");
-    createJobRequestDTO.setCompanyId(companyId.toString());
-    var result = this.createJobUseCase.execute(createJobRequestDTO);
-    return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    try {
+      var companyId = request.getAttribute("company_id");
+      createJobRequestDTO.setCompanyId(companyId.toString());
+      var result = this.createJobUseCase.execute(createJobRequestDTO);
+      return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
   }
 }

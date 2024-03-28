@@ -6,6 +6,7 @@ import com.marcosparreiras.gestao_vagas.modules.company.repositories.CompanyRepo
 import com.marcosparreiras.gestao_vagas.providers.JWTProvider;
 import com.marcosparreiras.gestao_vagas.utils.TestUtils;
 import java.util.Arrays;
+import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -79,7 +80,7 @@ public class CreateJobControllerTest {
         .build()
     );
 
-    var result = mvc
+    mvc
       .perform(
         MockMvcRequestBuilders
           .post("/company/job/")
@@ -88,7 +89,35 @@ public class CreateJobControllerTest {
           .content(requestData)
       )
       .andExpect(MockMvcResultMatchers.status().isCreated());
+  }
 
-    System.out.println(result);
+  @Test
+  @DisplayName("Should not be able to create a job with an invalid company")
+  @SuppressWarnings("null")
+  public void create_job_error() throws Exception {
+    var requestData = TestUtils.ObjectToJSON(
+      CreateJobRequestDTO
+        .builder()
+        .description("Some description")
+        .benefits("Some benefits")
+        .level("Some level")
+        .build()
+    );
+
+    var token =
+      this.jwtProvider.generateToken(
+          UUID.randomUUID().toString(),
+          Arrays.asList("COMPANY")
+        );
+
+    mvc
+      .perform(
+        MockMvcRequestBuilders
+          .post("/company/job/")
+          .header("Authorization", "Bearer " + token)
+          .contentType(MediaType.APPLICATION_JSON)
+          .content(requestData)
+      )
+      .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 }
