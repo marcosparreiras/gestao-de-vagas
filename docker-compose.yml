@@ -1,8 +1,16 @@
 version: "3.8"
 
+networks:
+  gv-network:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+  grafana_data:
+
 services:
   postgres:
-    container_name: gestao_vagas_postgres
+    container_name: postgres
     image: postgres
     ports:
       - 5432:5432
@@ -13,3 +21,22 @@ services:
       PGDATA: /data/postgres
     volumes:
       - ./data/pg:/data/postgres
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - gv-network
+    ports:
+      - 9090:9090
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    networks:
+      - gv-network
