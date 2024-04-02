@@ -16,3 +16,5 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+      - name: Run the Maven verify
+        run: mvn --batch-mode --update-snapshots verify
