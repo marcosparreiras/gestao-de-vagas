@@ -1,3 +1,5 @@
 package com.marcosparreiras.gestao_vagas.modules.candidate.dto;
 
-public record AuthCandidateResponseDTO(String token) {}
+import java.util.List;
+
+public record AuthCandidateResponseDTO(String token, List<String> roles) {}

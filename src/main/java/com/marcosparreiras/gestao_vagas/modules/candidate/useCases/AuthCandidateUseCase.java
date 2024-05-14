@@ -5,6 +5,7 @@ import com.marcosparreiras.gestao_vagas.modules.candidate.dto.AuthCandidateRespo
 import com.marcosparreiras.gestao_vagas.modules.candidate.repositories.CandidateRepository;
 import com.marcosparreiras.gestao_vagas.providers.JWTProvider;
 import java.util.Arrays;
+import java.util.List;
 import javax.naming.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,12 +41,11 @@ public class AuthCandidateUseCase {
       throw new AuthenticationException("Invalid credentials");
     }
 
-    var token =
-      this.jwtProvider.generateToken(
-          candidate.getId().toString(),
-          Arrays.asList("CANDIDATE")
-        );
+    List<String> roles = Arrays.asList("CANDIDATE");
 
-    return new AuthCandidateResponseDTO(token);
+    var token =
+      this.jwtProvider.generateToken(candidate.getId().toString(), roles);
+
+    return new AuthCandidateResponseDTO(token, roles);
   }
 }

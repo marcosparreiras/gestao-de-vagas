@@ -5,6 +5,7 @@ import com.marcosparreiras.gestao_vagas.modules.company.dto.AuthCompanyResponseD
 import com.marcosparreiras.gestao_vagas.modules.company.repositories.CompanyRepository;
 import com.marcosparreiras.gestao_vagas.providers.JWTProvider;
 import java.util.Arrays;
+import java.util.List;
 import javax.naming.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,12 +43,10 @@ public class AuthCompanyUseCase {
       throw new AuthenticationException("Invalid credentials");
     }
 
+    List<String> roles = Arrays.asList("COMPANY");
     var token =
-      this.JWTProvider.generateToken(
-          comapny.getId().toString(),
-          Arrays.asList("COMPANY")
-        );
+      this.JWTProvider.generateToken(comapny.getId().toString(), roles);
 
-    return new AuthCompanyResponseDTO(token);
+    return new AuthCompanyResponseDTO(token, roles);
   }
 }
